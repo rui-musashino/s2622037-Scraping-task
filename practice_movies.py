@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import re
+import time
 from pathlib import Path
 
 import requests
@@ -13,10 +14,13 @@ from bs4 import BeautifulSoup
 MOVIE_URL = "http://abehiroshi.la.coocan.jp/movie/eiga.htm"
 OUTPUT_PATH = Path(__file__).with_name("practice_movies.csv")
 USER_AGENT = "Mozilla/5.0 (compatible; s2622037-scraping-practice/1.0)"
+DELAY_SECONDS = 1.0
 
 
 def fetch_movie_titles() -> list[str]:
     """映画一覧表の2列目から作品名を取得する。"""
+    # サーバーの負荷を減らすため、アクセス前に待機する。
+    time.sleep(DELAY_SECONDS)
     response = requests.get(
         MOVIE_URL,
         headers={"User-Agent": USER_AGENT},
